@@ -6,6 +6,7 @@ import {WebApp} from 'meteor/webapp'
 import {_} from 'meteor/underscore'
 import log from './log'
 import getContext from './getContext'
+import './overrideDDP'
 
 const defaultConfig = {
   path: '/graphql',
@@ -54,7 +55,8 @@ export const createApolloServer = (givenOptions, givenConfig) => {
 
   // Start GraphiQL if enabled
   if (config.graphiql) {
-    graphQLServer.use(config.graphiqlPath, graphiqlExpress(_.extend(config.graphiqlOptions, {endpointURL: config.path})))
+    const graphiql = graphiqlExpress({...config.graphiqlOptions, endpointURL: config.path})
+    graphQLServer.use(config.graphiqlPath, graphiql)
   }
 
   // This binds the specified paths to the Express server running Apollo + GraphiQL
