@@ -1,3 +1,4 @@
+import './checkNpm'
 import {graphqlExpress, graphiqlExpress} from 'graphql-server-express'
 import bodyParser from 'body-parser'
 import express from 'express'
