@@ -38,8 +38,7 @@ export const createApolloServer = (givenOptions, givenConfig) => {
 
   config.configServer(graphQLServer)
 
-  // GraphQL endpoint
-  graphQLServer.use(config.path, bodyParser.json(), graphqlExpress((req) => {
+  const expressServer = graphqlExpress((req) => {
     let options = _.isFunction(givenOptions) ? givenOptions(req) : givenOptions
 
     // Merge in the defaults
@@ -52,7 +51,10 @@ export const createApolloServer = (givenOptions, givenConfig) => {
     }
 
     return options
-  }))
+  })
+
+  // GraphQL endpoint
+  graphQLServer.use(config.path, bodyParser.json(), Meteor.bindEnvironment(expressServer))
 
   // Start GraphiQL if enabled
   if (config.graphiql) {
