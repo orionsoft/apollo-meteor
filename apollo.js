@@ -22,11 +22,43 @@ const defaultConfig = {
 }
 
 const defaultOptions = {
-  formatError: error => ({
-    message: error.message,
-    locations: error.locations,
-    path: error.path
-  })
+  formatError (error) {
+    console.warn(`GraphQL Error: ${error.message}`)
+    if (!error.path) {
+      return {
+        message: error.message,
+        reason: error.reason,
+        path: error.path
+      }
+    }
+    console.warn(`At ${error.path[0]}`)
+    // console.error(error.stack)
+    let details = {}
+    try {
+      if (error.originalError && error.originalError.invalidKeys || (error.originalError.error === 'validation-error')) {
+        details.invalidKeys = {}
+        const keys = error.originalError.invalidKeys || error.originalError.details
+        keys.forEach(key => {
+          let context = error.originalError.validationContext
+          let message = key.message
+          if (context) {
+            message = context.keyErrorMessage(key.name)
+          }
+          details.invalidKeys[key.name] = message
+        })
+      }
+    } catch (error) {
+      console.log('Error in formatError:')
+      console.log(error)
+      console.log(error.stack)
+    }
+    return {
+      message: error.message,
+      reason: error.reason,
+      path: error.path,
+      details
+    }
+  }
 }
 
 export const createApolloServer = (givenOptions, givenConfig) => {
