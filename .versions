@@ -24,7 +24,7 @@ html-tools@1.0.11
 htmljs@1.0.11
 id-map@1.0.9
 jquery@1.11.10
-local-test:orionsoft:apollo@0.0.4
+local-test:orionsoft:apollo@0.0.6
 localstorage@1.0.12
 logging@1.1.16
 meteor@1.6.0
@@ -37,7 +37,7 @@ nooitaf:colors@1.1.2_1
 npm-mongo@2.2.11_2
 observe-sequence@1.0.14
 ordered-dict@1.0.9
-orionsoft:apollo@0.0.4
+orionsoft:apollo@0.0.6
 promise@0.8.8
 random@1.0.10
 rate-limit@1.0.6
