@@ -1,3 +1,4 @@
+/* global Npm */
 import './checkNpm'
 import {graphqlExpress, graphiqlExpress} from 'graphql-server-express'
 import bodyParser from 'body-parser'
@@ -6,20 +7,9 @@ import {Meteor} from 'meteor/meteor'
 import {WebApp} from 'meteor/webapp'
 import {_} from 'meteor/underscore'
 import log from './log'
-import getContext from './getContext'
+import defaultGetContext from './getContext'
+const Fiber = Npm.require('fibers')
 import './overrideDDP'
-
-const defaultConfig = {
-  path: '/graphql',
-  maxAccountsCacheSizeInMB: 1,
-  graphiql: true,
-  graphiqlPath: '/graphiql',
-  logCalls: true,
-  graphiqlOptions: {
-    passHeader: "'Authorization': localStorage['Meteor.loginToken']"
-  },
-  configServer: (graphQLServer) => {}
-}
 
 const defaultOptions = {
   formatError (error) {
@@ -61,6 +51,19 @@ const defaultOptions = {
   }
 }
 
+const defaultConfig = {
+  path: '/graphql',
+  maxAccountsCacheSizeInMB: 1,
+  graphiql: true,
+  graphiqlPath: '/graphiql',
+  logCalls: true,
+  graphiqlOptions: {
+    passHeader: "'Authorization': localStorage['Meteor.loginToken']"
+  },
+  configServer: (graphQLServer) => {},
+  getContext: defaultGetContext
+}
+
 export const createApolloServer = (givenOptions, givenConfig) => {
   let graphiqlOptions = {...defaultConfig.graphiqlOptions, ...givenConfig.graphiqlOptions}
   let config = {...defaultConfig, ...givenConfig}
@@ -75,8 +78,9 @@ export const createApolloServer = (givenOptions, givenConfig) => {
 
     // Merge in the defaults
     options = {...defaultOptions, ...options}
-    options.context = getContext({req})
+    options.context = config.getContext(req)
     options.context.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    Fiber.current.graphQLContext = options.context
 
     if (config.logCalls) {
       log({req, context: options.context})

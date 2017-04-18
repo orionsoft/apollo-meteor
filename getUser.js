@@ -17,9 +17,4 @@ export default function (req) {
   const expiresAt = Accounts._tokenExpiration(user.services.resume.loginTokens[0].when)
   const isExpired = expiresAt < new Date()
   if (isExpired) return {}
-
-  return {
-    userId: user._id,
-    loginToken: token
-  }
 }
