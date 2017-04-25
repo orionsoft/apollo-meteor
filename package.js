@@ -2,7 +2,7 @@
 
 Package.describe({
   name: 'orionsoft:apollo',
-  version: '0.1.0',
+  version: '0.1.1',
   summary: 'A better Apollo integration for Meteor only serverside',
   git: 'https://github.com/orionsoft/apollo-meteor',
   documentation: 'README.md'
