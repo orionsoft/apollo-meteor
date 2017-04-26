@@ -2,6 +2,8 @@ import {_} from 'meteor/underscore'
 
 export default function ({req, context}) {
   const options = req.body[0]
+  if (!options) return
+  if (!options.query) return
   console.info(`New GraphQL query ${options.operationName}:`.underline.bold)
   console.info(`Token: ${context.loginToken}\n`.grey)
   console.info(options.query)
