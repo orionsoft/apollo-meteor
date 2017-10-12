@@ -2,13 +2,13 @@
 
 Package.describe({
   name: 'orionsoft:apollo',
-  version: '0.1.2',
+  version: '0.1.3',
   summary: 'A better Apollo integration for Meteor only serverside',
   git: 'https://github.com/orionsoft/apollo-meteor',
   documentation: 'README.md'
 })
 
-Package.onUse(function (api) {
+Package.onUse(function(api) {
   api.versionsFrom('1.4.2.3')
   api.use('ecmascript')
   api.use('underscore')
@@ -19,7 +19,7 @@ Package.onUse(function (api) {
   api.mainModule('apollo.js', 'server')
 })
 
-Package.onTest(function (api) {
+Package.onTest(function(api) {
   api.use('ecmascript')
   api.use('tinytest')
   api.use('orionsoft:apollo')
