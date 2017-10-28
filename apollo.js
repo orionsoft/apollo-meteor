@@ -11,17 +11,23 @@ const Fiber = Npm.require('fibers')
 import './overrideDDP'
 
 const defaultOptions = {
+  debug: false,
   formatError(error) {
-    console.warn(`GraphQL Error: ${error.message}`)
     if (!error.path) {
+      console.warn(`GraphQL Error: ${error.message}`)
       return {
         message: error.message,
         reason: error.reason,
         path: error.path
       }
     }
-    console.warn(`At ${error.path[0]}`)
-    // console.error(error.stack)
+    console.warn(`GraphQL error on "${error.path[0]}"`)
+    console.warn(
+      error.stack
+        .split('\n')
+        .slice(0, 2)
+        .join('\n')
+    )
     let details = {}
     try {
       if (
