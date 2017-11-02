@@ -21,11 +21,11 @@ const defaultOptions = {
         path: error.path
       }
     }
-    console.warn(`GraphQL error on "${error.path[0]}"`)
+    console.warn(`GraphQL error on "${error.path.reverse().join('.')}"`)
     console.warn(
       error.stack
         .split('\n')
-        .slice(0, 2)
+        .slice(0, 4)
         .join('\n')
     )
     let details = {}
